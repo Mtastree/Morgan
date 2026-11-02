@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "default_profile_id": "example-qwen25-1.5b",
+  "last_success_profile_id": null,
+  "deployment_import": {
+    "done": true
+  },
+  "profiles": [
+    {
+      "profile_id": "example-qwen25-1.5b",
+      "display_name": "Qwen2.5-1.5b-Instruct Q4_K_M",
+      "model_path": "models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "serving_alias": "qwen25-1.5b-instruct-q4_k_m",
+      "target_context_window": 4096,
+      "gpu_layers": 99,
+      "default_max_output_tokens": 512,
+      "advanced": {}
+    },
+    {
+      "profile_id": "example-qwen25-3b",
+      "display_name": "Qwen2.5-3b-Instruct Q4_K_M",
+      "model_path": "models/qwen2.5-3b-instruct-q4_k_m.gguf",
+      "serving_alias": "qwen25-3b-instruct-q4_k_m",
+      "target_context_window": 4096,
+      "gpu_layers": 99,
+      "default_max_output_tokens": 512,
+      "advanced": {}
+    }
+  ]
+}

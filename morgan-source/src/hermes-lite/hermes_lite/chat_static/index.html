@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="system" data-font-size="standard" data-density="standard">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morgan</title>
+<link rel="icon" type="image/png" href="/static/chat.png">
+<link rel="icon" type="image/x-icon" href="/static/chat.ico">
+<link rel="stylesheet" href="/static/chat.css">
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- 左栏：会话列表 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-text">
+        <span class="brand-name">Morgan</span>
+        <!-- Round 43: the model subtitle is filled from the VERIFIED running
+             profile. It starts as 未加载 so no model name is shown as if it were
+             running when nothing is. -->
+        <span class="brand-sub" id="brand-model">未加载模型</span>
+      </div>
+      <button id="btn-sidebar-collapse" class="btn-icon" title="折叠侧栏" aria-label="折叠侧栏">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="3" x2="9" y2="21"></line>
+          <polyline points="15 15 12 12 15 9"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <button id="btn-new" class="btn-new">
+        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>新建对话</span>
+      </button>
+
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="session-search" placeholder="搜索标题与预览..." title="搜索范围：会话标题及最近一条消息预览" autocomplete="off">
+      <button id="btn-search-clear" class="btn-search-clear" title="清空搜索" hidden>
+        <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="side-label-row">
+      <span class="side-label" id="session-count-label">对话</span>
+    </div>
+    <div id="session-list" class="session-list"></div>
+
+    <div class="side-foot">
+      <button id="btn-memory" class="btn-ghost" aria-expanded="false">
+        <span class="btn-with-icon">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>它记住了什么</span>
+        </span>
+        <span id="memory-count" class="badge">0</span>
+      </button>
+      <button id="btn-open-settings" class="btn-ghost">
+        <span class="btn-with-icon">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>综合设置与诊断</span>
+        </span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- 中栏：消息主体 -->
+  <main class="main" id="main-area">
+    <header class="chat-head">
+      <div class="chat-head-left">
+        <button id="btn-sidebar-expand" class="btn-icon" title="展开侧栏" aria-label="展开侧栏" hidden>
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+            <polyline points="13 9 16 12 13 15"></polyline>
+          </svg>
+        </button>
+        <div class="chat-title">
+          <h1 id="session-title">新对话</h1>
+          <span class="chat-meta" id="session-meta"></span>
+        </div>
+      </div>
+      <div class="chat-actions">
+        <button id="btn-session-settings" class="btn-ghost" title="当前对话设置">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>会话设置</span>
+        </button>
+        <div class="dropdown" id="dropdown-more-wrap">
+          <button id="btn-more" class="btn-ghost" title="更多操作" aria-haspopup="true" aria-expanded="false">
+            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+            <span>更多</span>
+          </button>
+          <div class="dropdown-menu" id="more-menu" hidden>
+            <button id="btn-rename" class="dropdown-item">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+              <span>重命名对话</span>
+            </button>
+            <button id="btn-restart-boundary" class="dropdown-item">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>从这里重新开始</span>
+            </button>
+            <button id="btn-compress-history" class="dropdown-item">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 14h6m-6 4h6m8-4l-3 3-3-3m3 3V4"/></svg>
+              <span>压缩较早对话</span>
+            </button>
+            <div class="dropdown-divider"></div>
+            <button id="btn-export-md" class="dropdown-item">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>导出 Markdown (.md)</span>
+            </button>
+            <button id="btn-export-json" class="dropdown-item">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>导出 JSON (.json)</span>
+            </button>
+            <div class="dropdown-divider"></div>
+            <button id="btn-delete" class="dropdown-item danger">
+              <svg class="menu-svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+              <span>删除对话</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="banner" class="banner" hidden></div>
+
+    <div id="messages" class="messages" aria-live="polite">
+      <div class="empty" id="empty-state">
+        <p class="empty-title">开始一段对话</p>
+        <p class="empty-sub">输入消息即可交流。会话记录自动保存在本机，离线安全可用。</p>
+      </div>
+    </div>
+
+    <div class="composer">
+      <!-- 快捷设置工具条 -->
+      <div class="quick-bar" id="quick-bar">
+        <div class="quick-item" title="回答方式：通过系统指令引导模型回答风格">
+          <span class="quick-label">回答方式</span>
+          <select id="quick-style" class="quick-select">
+            <option value="standard">标准</option>
+            <option value="concise">简洁</option>
+            <option value="detailed">详细</option>
+          </select>
+        </div>
+        <div class="quick-item" title="携带历史：控制本次发送带入的历史轮数策略">
+          <span class="quick-label">携带历史</span>
+          <select id="quick-history" class="quick-select">
+            <option value="auto">自动 (预算裁剪)</option>
+            <option value="current_only">仅当前消息</option>
+            <option value="custom">自定义预算...</option>
+          </select>
+        </div>
+        <div class="quick-item" title="回复上限：单次回答的最大生成 token 数。预设之外的数值也可直接填写（例如 768）。">
+          <span class="quick-label">回复上限</span>
+          <select id="quick-max-tokens" class="quick-select">
+            <option value="128">128 tokens</option>
+            <option value="512">512 tokens</option>
+            <option value="1024">1024 tokens</option>
+            <option value="custom">自定义...</option>
+          </select>
+          <input type="number" id="quick-max-tokens-custom" class="quick-input"
+                 min="32" step="1" placeholder="自定义" hidden>
+        </div>
+        <div class="quick-item" title="允许按需联网：开启后只有确实需要外部信息的问题才会检索，普通聊天不会联网。只有真正使用了检索摘要才会显示「联网回答」和来源。">
+          <label class="quick-toggle-label" for="quick-web-search">
+            <input type="checkbox" id="quick-web-search">
+            <svg class="quick-icon" viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>允许联网</span>
+          </label>
+        </div>
+        <div class="quick-spacer"></div>
+        <button id="btn-quick-to-settings" class="btn-text-link">更多设置 »</button>
+      </div>
+
+      <div id="notice" class="notice" hidden></div>
+
+      <div class="composer-row">
+        <textarea id="input" rows="1" placeholder="输入消息，Enter 发送，Shift+Enter 换行"></textarea>
+        <div class="composer-buttons">
+          <button id="btn-send" class="btn-send">发送</button>
+          <button id="btn-stop" class="btn-stop" hidden>停止</button>
+        </div>
+      </div>
+
+      <div class="composer-foot">
+        <div class="composer-foot-left">
+          <span id="gen-state" class="gen-state">空闲</span>
+        </div>
+        <div class="composer-foot-right">
+          <span id="ctx-indicator" class="ctx-indicator">预估带入完整对话 · 上限 512 tokens</span>
+          <span id="shortcut-hint" class="shortcut-hint">Enter 发送</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 抽屉：记忆面板 -->
+  <aside id="memory-drawer" class="drawer memory-drawer" hidden>
+    <header class="drawer-head">
+      <h2>它记住了什么</h2>
+      <button id="memory-close" class="btn-icon" title="关闭抽屉" aria-label="关闭抽屉"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </header>
+    <p class="drawer-intro">
+      保存你在对话中明确表达过的称呼、交流偏好和持续背景。
+      <strong>暂定</strong>项与<strong>已停用</strong>项不会注入到聊天中。
+      删除后不会从旧记录里重新提取。
+    </p>
+    <div id="memory-list" class="memory-list"></div>
+  </aside>
+
+  <!-- 模态弹窗：综合设置与诊断 -->
+  <div id="modal-backdrop" class="modal-backdrop" hidden></div>
+  <div id="settings-modal" class="modal settings-modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <header class="modal-head">
+      <h2 id="settings-title">设置与诊断</h2>
+      <button id="settings-close" class="btn-icon" title="关闭设置" aria-label="关闭设置"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </header>
+
+    <div class="settings-nav">
+      <button class="settings-tab active" data-tab="tab-session">当前会话设置</button>
+      <button class="settings-tab" data-tab="tab-appearance">外观与按键</button>
+      <button class="settings-tab" data-tab="tab-persona">聊天人格</button>
+      <button class="settings-tab" data-tab="tab-model">模型运行</button>
+      <button class="settings-tab" data-tab="tab-diagnostics">运行状态与诊断</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- 选项卡 1：当前会话设置 -->
+      <div class="tab-pane active" id="tab-session">
+        <div class="form-group">
+          <label class="form-label" for="setting-style">回答方式</label>
+          <select id="setting-style" class="form-select">
+            <option value="standard">标准 (默认：自然、适度简洁的中文对话)</option>
+            <option value="concise">简洁 (言简意赅，直奔主题，无需铺垫)</option>
+            <option value="detailed">详细 (全面展开论述，说明详实；不保证能力提升)</option>
+          </select>
+          <span class="form-hint">通过显式系统指令引导模型表达风格，不覆盖用户实际问题。</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-history">携带聊天历史</label>
+          <select id="setting-history" class="form-select">
+            <option value="auto">自动 (按 token 预算带入最近完整轮次，超出则裁剪较早轮次)</option>
+            <option value="current_only">仅当前消息 (不带入之前聊天记录，记忆由记忆开关决定)</option>
+            <option value="custom">自定义预算 (指定输入上下文 token 预算)</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="group-custom-budget" hidden>
+          <label class="form-label" for="setting-custom-budget">自定义输入上下文预算 (tokens)</label>
+          <div class="input-unit">
+            <input type="number" id="setting-custom-budget" min="256" step="64" value="2048" class="form-input">
+            <span class="unit-text">tokens</span>
+          </div>
+          <span class="form-hint" id="hint-custom-budget">这是本次输入的上下文预算上限，并非模型的物理上下文窗口。可用范围会随当前实际窗口与回复上限变化。</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-max-tokens">单次回复上限</label>
+          <div class="select-with-custom">
+            <select id="setting-max-tokens" class="form-select">
+              <option value="128">128 tokens (极短回答/快速验证)</option>
+              <option value="512">512 tokens (默认日常聊天)</option>
+              <option value="1024">1024 tokens (长篇论述)</option>
+              <option value="custom">自定义数值...</option>
+            </select>
+            <input type="number" id="setting-max-tokens-custom" class="form-input"
+                   min="32" step="1" placeholder="例如 768" hidden>
+          </div>
+          <span class="form-hint">
+            这是生成输出上限：模型可能提前自然结束，因此它是<b>回复上限</b>而非“一定生成这么多”。
+            达到上限会被截断。可用范围会随当前实际窗口校验。
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">记忆双独立控制</label>
+          <label class="check-item">
+            <input type="checkbox" id="setting-use-memory">
+            <span class="check-text"><strong>使用已保存记忆</strong>：向本会话注入已保存的明确称呼与偏好</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="setting-learn-memory">
+            <span class="check-text"><strong>自动保存明确偏好</strong>：允许从新的用户消息中提取并保存明确表达的偏好与背景</span>
+          </label>
+          <span class="form-hint">两个开关完全独立。关闭使用不影响记忆存储；关闭保存不影响已有记忆生效。</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">联网（按需）</label>
+          <label class="check-item">
+            <input type="checkbox" id="setting-web-search">
+            <span class="check-text"><strong>允许按需联网（需要时自动检索）</strong></span>
+          </label>
+          <span class="form-hint">这是「允许按需联网」开关：开启后，只有确实需要外部或时效信息的问题才会检索，普通聊天与自我介绍不会联网。需要检索时只把构造出的查询（去掉「帮我查一下」等请求语）发送给检索服务，按 DuckDuckGo → Yandex → Wikipedia 固定顺序（总限时10秒）；回答仍由本地模型生成，只有确实使用了检索摘要才会标记「联网回答」。关闭时任何消息都不会联网。新会话默认关闭。</span>
+        </div>
+
+        <div id="param-error" class="param-error" hidden></div>
+
+        <div class="form-actions">
+          <button id="btn-save-session-settings" class="btn-primary">保存本会话设置</button>
+          <button id="btn-reset-session-settings" class="btn-ghost">恢复本会话默认值</button>
+        </div>
+      </div>
+
+      <!-- 选项卡：聊天人格（Round 50） -->
+      <div class="tab-pane" id="tab-persona">
+        <!-- 1. 核心开关置顶 Hero Card -->
+        <div class="persona-hero-card">
+          <label class="check-item persona-hero-toggle" for="persona-enabled">
+            <input type="checkbox" id="persona-enabled">
+            <div class="persona-hero-info">
+              <span class="persona-hero-title">启用聊天人格</span>
+              <span class="persona-hero-desc">开启后，将下方设定的角色风格与人设立场注入每次模型请求中。关闭时不参与任何请求。</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- 2. 人格正文编辑区 -->
+        <div class="form-group persona-body-group">
+          <div class="persona-body-head">
+            <label class="form-label" for="persona-body">人格与交流风格正文</label>
+            <div class="persona-foot">
+              <span id="persona-count" class="persona-count">0 字符</span>
+              <span id="persona-dirty" class="persona-dirty" hidden>有未保存修改</span>
+            </div>
+          </div>
+          <textarea id="persona-body" class="persona-body" rows="8"
+                    placeholder="例如：你是一位温和、坦率、有一点幽默感的聊天伙伴。说话自然，像熟悉的朋友……"></textarea>
+        </div>
+
+        <!-- 3. 操作按钮 -->
+        <div class="form-actions persona-actions">
+          <button id="btn-persona-save" class="btn-primary">保存人格</button>
+          <button id="btn-persona-reload" class="btn-ghost">放弃修改并重新读取</button>
+        </div>
+
+        <!-- 4. 专用稳定反馈提示区（固定在操作按钮下方，不引起控件跳动） -->
+        <div id="persona-feedback" class="param-error" hidden></div>
+
+        <!-- 5. 次要技术信息折叠/收纳于底部 -->
+        <div class="persona-meta-footer">
+          <div class="persona-meta-row">
+            <span class="persona-meta-label">文件路径：</span>
+            <span class="persona-path" id="persona-path">—</span>
+          </div>
+          <span class="form-hint">本地 Markdown 文件，与应用实时同步，亦可直接使用外部记事本编辑。</span>
+        </div>
+      </div>
+
+      <!-- 选项卡 2：外观与交互 -->
+      <div class="tab-pane" id="tab-appearance">
+        <div class="form-group">
+          <label class="form-label" for="setting-theme">主题外观</label>
+          <select id="setting-theme" class="form-select">
+            <option value="system">跟随系统 (默认)</option>
+            <option value="light">浅色模式</option>
+            <option value="dark">深色模式</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-font-size">阅读字号</label>
+          <select id="setting-font-size" class="form-select">
+            <option value="small">小 (13.5px 基准)</option>
+            <option value="standard">标准 (15px 基准)</option>
+            <option value="large">大 (16.5px 基准)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-density">界面密度</label>
+          <select id="setting-density" class="form-select">
+            <option value="compact">紧凑 (紧密排列，适合大信息量)</option>
+            <option value="standard">标准 (平衡排版，舒适阅读)</option>
+            <option value="spacious">宽松 (宽松留白，轻松阅读)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-send-shortcut">发送快捷键</label>
+          <select id="setting-send-shortcut" class="form-select">
+            <option value="enter">Enter 发送 (Shift+Enter 换行)</option>
+            <option value="ctrl_enter">Ctrl+Enter 发送 (Enter 换行)</option>
+          </select>
+          <span class="form-hint">中文输入法组合打字输入（拼音选字）时，按 Enter 均不会发生误发送。</span>
+        </div>
+      </div>
+
+      <!-- 选项卡 3：模型运行 -->
+      <div class="tab-pane" id="tab-model">
+        <div class="model-status-card">
+          <div class="model-card-title">模型运行状态</div>
+          <div class="model-info-grid">
+            <div class="diag-row">
+              <span class="diag-k">当前配置</span>
+              <span class="diag-v" id="model-profile-name">未加载</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-k">模型文件</span>
+              <span class="diag-v" id="model-profile-file">—</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-k">模型标识</span>
+              <span class="diag-v" id="model-alias">—</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-k">服务归属</span>
+              <span class="diag-v" id="model-ownership">—</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-k">当前生效窗口</span>
+              <span class="diag-v" id="model-actual-window">—</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-k">运行状态</span>
+              <span class="diag-v" id="model-status-badge">—</span>
+            </div>
+            <div class="diag-row" id="row-model-pid">
+              <span class="diag-k">进程 PID</span>
+              <span class="diag-v" id="model-pid">—</span>
+            </div>
+          </div>
+          <div id="model-error-banner" class="model-alert error" hidden></div>
+          <div id="model-busy-banner" class="model-alert warning" hidden></div>
+          <div id="model-external-banner" class="model-alert info" hidden></div>
+        </div>
+
+        <!-- Round 43: 模型配置管理 -->
+        <div class="profile-section">
+          <div class="profile-head">
+            <div>
+              <div class="model-card-title">模型配置管理</div>
+              <div class="profile-note">
+                同一时间只运行一个受管模型。「默认启动」决定下次启动加载哪个；
+                「正在运行」只有在加载并核验成功后才会更新。
+              </div>
+            </div>
+            <button id="btn-profile-add" class="btn-ghost btn-small">＋ 添加配置</button>
+          </div>
+
+          <div id="profile-list" class="profile-list">
+            <div class="profile-empty">正在读取模型配置…</div>
+          </div>
+
+          <div id="profile-error" class="param-error" hidden></div>
+
+          <!-- 关系说明：默认 / 目标 / 当前 / 最近成功 -->
+          <div class="profile-relations" id="profile-relations" hidden>
+            <div class="comp-item">
+              <span class="comp-label">默认启动：</span>
+              <span class="comp-val" id="disp-default-profile">—</span>
+            </div>
+            <div class="comp-item">
+              <span class="comp-label">正在运行：</span>
+              <span class="comp-val" id="disp-current-profile">—</span>
+            </div>
+            <div class="comp-item">
+              <span class="comp-label">准备加载：</span>
+              <span class="comp-val" id="disp-target-profile">—</span>
+            </div>
+            <div class="comp-item">
+              <span class="comp-label">最近成功：</span>
+              <span class="comp-val" id="disp-last-success-profile">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 添加/编辑表单 -->
+        <div class="profile-form" id="profile-form" hidden>
+          <div class="model-card-title" id="profile-form-title">添加模型配置</div>
+          <input type="hidden" id="profile-form-id">
+
+          <div class="form-group">
+            <label class="form-label" for="pf-display-name">显示名称</label>
+            <input type="text" id="pf-display-name" class="form-input" maxlength="64"
+                   placeholder="例如 通义千问 1.5B 日常版">
+            <span class="form-hint">只用于界面显示；改名不会改变配置 ID，也不会改变正在运行的模型。</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pf-model-path">本地 GGUF 文件路径</label>
+            <div class="input-unit">
+              <input type="text" id="pf-model-path" class="form-input"
+                     placeholder="例如 models\xxx.gguf 或绝对路径 D:\models\xxx.gguf">
+              <button id="btn-pf-browse" class="btn-ghost btn-small" type="button"
+                      title="打开系统文件选择器">选择…</button>
+            </div>
+            <span class="form-hint" id="pf-path-hint">
+              相对路径以项目根目录为基准（<span id="pf-project-root">E:\project\qwen25-agent</span>），
+              不是当前工作目录。支持含空格与中文的路径。本应用不会复制、移动或删除模型文件。
+            </span>
+            <span class="form-hint" id="pf-file-check"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pf-alias">服务别名</label>
+            <input type="text" id="pf-alias" class="form-input"
+                   placeholder="留空则由显示名称自动生成，例如 qwen-1.5b-daily">
+            <span class="form-hint">
+              服务对外声明的别名，用于核验"实际加载的是哪一份"。两个配置不能共用同一别名。
+              显示名称、配置 ID、服务别名和文件路径是四个不同的概念。
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pf-window">目标上下文窗口 (tokens)</label>
+            <input type="number" id="pf-window" class="form-input" min="512" max="131072" step="256" value="4096">
+            <span class="form-hint" id="pf-window-hint">
+              需为 256 的整数倍。这是目标值，加载后以服务实际报告的窗口为准。
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pf-gpu-layers">GPU 卸载层数 (-ngl)</label>
+            <input type="number" id="pf-gpu-layers" class="form-input" min="0" max="4096" step="1" value="99">
+            <span class="form-hint">99 表示尽量全部卸载到 GPU；0 表示纯 CPU。显存不足时加载会失败，本应用不会自动下调。</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pf-max-output">默认回复上限 (tokens)</label>
+            <input type="number" id="pf-max-output" class="form-input" min="32" max="32768" step="1" value="512">
+            <span class="form-hint">
+              新会话创建时继承这个值；已有会话保留自己的设置，不会被切换模型批量改写。
+            </span>
+          </div>
+
+          <div id="pf-error" class="param-error" hidden></div>
+
+          <div class="form-actions">
+            <button id="btn-pf-save" class="btn-primary">保存配置</button>
+            <button id="btn-pf-cancel" class="btn-ghost">取消</button>
+          </div>
+        </div>
+
+        <!-- 高级与快捷调整：收纳于 Profile 列表下方，保持 DOM 元素与 ID 完整兼容 -->
+        <details class="model-advanced-box" id="model-advanced-box">
+          <summary class="advanced-summary">
+            <svg class="advanced-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <span>高级选项：当前服务实际物理窗口与运行诊断</span>
+          </summary>
+          <div class="advanced-body">
+            <div class="form-group">
+              <label class="form-label">快捷调整当前上下文窗口</label>
+              <div class="window-options-grid" id="window-preset-grid">
+                <label class="window-option-card" id="opt-window-2048">
+                  <input type="radio" name="model-target-window" value="2048" id="radio-window-2048">
+                  <div class="window-card-content">
+                    <div class="window-card-title">2048 tokens</div>
+                    <div class="window-card-desc">轻量档位 · 显存占用少，适合日常简短对话</div>
+                  </div>
+                </label>
+                <label class="window-option-card" id="opt-window-4096">
+                  <input type="radio" name="model-target-window" value="4096" id="radio-window-4096">
+                  <div class="window-card-content">
+                    <div class="window-card-title">4096 tokens (默认)</div>
+                    <div class="window-card-desc">标准档位 · 完整上下文容量</div>
+                  </div>
+                </label>
+                <label class="window-option-card" id="opt-window-custom">
+                  <input type="radio" name="model-target-window" value="custom" id="radio-window-custom">
+                  <div class="window-card-content">
+                    <div class="window-card-title">自定义…</div>
+                    <div class="window-card-desc">需为 256 整数倍</div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-unit" id="group-custom-window" style="margin-top: 10px;" hidden>
+                <input type="number" id="input-custom-window" class="form-input" min="512" max="131072" step="256" placeholder="例如 3072">
+                <span class="unit-text">tokens</span>
+              </div>
+              <span class="form-hint" id="hint-window-limits">目标值需重新加载后生效；以服务实际报告窗口为准。</span>
+            </div>
+
+            <div class="model-comparison-box">
+              <div class="comp-item">
+                <span class="comp-label">当前实际生效：</span>
+                <span class="comp-val" id="disp-actual-window">—</span>
+              </div>
+              <div class="comp-arrow">➔</div>
+              <div class="comp-item">
+                <span class="comp-label">准备设置为：</span>
+                <span class="comp-val" id="disp-target-window">—</span>
+              </div>
+            </div>
+
+            <div class="model-comparison-box" id="capability-box">
+              <div class="comp-item">
+                <span class="comp-label">模型声明上下文：</span>
+                <span class="comp-val" id="disp-declared-window">—</span>
+              </div>
+              <div class="comp-item">
+                <span class="comp-label">回复预留：</span>
+                <span class="comp-val" id="disp-reply-reserve">—</span>
+              </div>
+              <div class="comp-item">
+                <span class="comp-label">输入可用：</span>
+                <span class="comp-val" id="disp-input-budget">—</span>
+              </div>
+            </div>
+            <span class="form-hint" id="hint-declared-window">「模型声明上下文」来自元数据，「当前实际生效」为服务真正所用。</span>
+
+            <div class="model-prompt-note">
+              <div class="note-item">• <strong>配置即运行</strong>：推荐直接使用上方的「模型配置管理」选择配置并加载。</div>
+              <div class="note-item">• <strong>重新加载影响</strong>：重新加载模型将短暂暂停聊天（通常需 2~5 秒），数据完整保留。</div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 12px;">
+              <button id="btn-reload-model" class="btn-primary">应用并重新加载模型</button>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- 选项卡 4：运行状态与诊断 -->
+      <div class="tab-pane" id="tab-diagnostics">
+        <div class="diag-card" id="diag-content">
+          <div class="diag-loading">正在读取系统状态…</div>
+        </div>
+        <div class="diag-note">
+          <strong>说明</strong>：物理模型窗口可在「模型运行」选项卡中调整（预设或自定义整数，需重新加载才生效）。
+          外部复用的模型服务由本应用只读显示，不会被擅自重启。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模态弹窗：对话摘要压缩 -->
+  <div id="compress-modal" class="modal compress-modal" hidden role="dialog" aria-modal="true" aria-labelledby="compress-title">
+    <header class="modal-head">
+      <h2 id="compress-title"><svg class="modal-title-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 14h6m-6 4h6m8-4l-3 3-3-3m3 3V4"/></svg> 压缩较早对话</h2>
+      <button id="compress-close" class="btn-icon" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </header>
+
+    <div class="modal-body">
+      <!-- 范围与现状卡片 -->
+      <div class="compress-scope-card">
+        <div class="scope-row">
+          <span class="scope-label">压缩策略：</span>
+          <span class="scope-val" id="compress-strategy-desc">保留最近 3 轮原文，压缩其余更早完整轮次</span>
+        </div>
+        <div class="scope-row">
+          <span class="scope-label">可压缩旧轮次：</span>
+          <span class="scope-val" id="compress-candidate-turns">—</span>
+        </div>
+        <div class="scope-row">
+          <span class="scope-label">保留近期原文：</span>
+          <span class="scope-val" id="compress-recent-turns">最近 3 轮</span>
+        </div>
+        <div class="scope-row">
+          <span class="scope-label">覆盖消息范围：</span>
+          <span class="scope-val" id="compress-coverage-range">—</span>
+        </div>
+      </div>
+
+      <!-- 状态提示条（生成中/不可用/无候选） -->
+      <div id="compress-alert" class="model-alert info" hidden></div>
+
+      <!-- 摘要内容预览区（已有摘要时展示） -->
+      <div id="compress-result-box" class="compress-result-box" hidden>
+        <div class="compress-result-header">
+          <div class="result-title-group">
+            <span class="result-badge" id="compress-status-badge">已就绪</span>
+            <span class="result-savings" id="compress-savings-badge">节省 — tokens</span>
+          </div>
+          <div class="result-active-toggle">
+            <label class="toggle-label">
+              <input type="checkbox" id="compress-toggle-active">
+              <span class="toggle-text">启用此摘要</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="compress-sections">
+          <div class="compress-section-card">
+            <div class="section-card-title">1. 用户明确提供的事实和约束</div>
+            <div class="section-card-body" id="section-user-facts">暂无</div>
+          </div>
+          <div class="compress-section-card">
+            <div class="section-card-title">2. 当前目标及已确定的决定</div>
+            <div class="section-card-body" id="section-goals-decisions">暂无</div>
+          </div>
+          <div class="compress-section-card">
+            <div class="section-card-title">3. 待办和未解决问题</div>
+            <div class="section-card-body" id="section-todos">暂无</div>
+          </div>
+          <div class="compress-section-card">
+            <div class="section-card-title">4. 已修改、撤销或被替代的要求</div>
+            <div class="section-card-body" id="section-superseded">暂无</div>
+          </div>
+        </div>
+
+        <div class="compress-meta-info" id="compress-meta-info"></div>
+      </div>
+
+      <!-- 提示说明 -->
+      <div class="model-prompt-note" style="margin-top: 14px;">
+        <div class="note-item">• <strong>原始数据安全</strong>：压缩不会删除或修改 SQLite 中保存的原始聊天记录。</div>
+        <div class="note-item">• <strong>独立开关</strong>：默认不改变现有会话行为；生成后需勾选「启用此摘要」才会在后续聊天中携带。</div>
+        <div class="note-item">• <strong>记忆隔离</strong>：对话摘要仅限本会话使用，不会写入长期用户记忆，不跨会话共享。</div>
+        <div class="note-item">• <strong>自动回退</strong>：停用摘要或超出预算时，自动恢复原有按预算裁剪方式。</div>
+      </div>
+    </div>
+
+    <div class="modal-footer compress-footer">
+      <div class="footer-left">
+        <button id="btn-delete-summary" class="btn-ghost danger" hidden>删除摘要</button>
+      </div>
+      <div class="footer-right">
+        <button id="btn-stop-compress" class="btn-danger" hidden>停止压缩</button>
+        <button id="btn-generate-compress" class="btn-primary">开始生成摘要</button>
+        <button id="btn-cancel-compress" class="btn-ghost">关闭</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <!-- 应用内轻量确认与输入浮层 -->
+  <div id="confirm-modal" class="modal confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="confirm-box">
+      <div class="confirm-head">
+        <div class="confirm-icon-wrap" id="confirm-icon-wrap">
+          <svg class="confirm-svg warning" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 id="confirm-title" class="confirm-title">确认操作</h3>
+      </div>
+      <div id="confirm-message" class="confirm-message"></div>
+      <div id="confirm-input-wrap" class="confirm-input-wrap" hidden>
+        <input type="text" id="confirm-input" class="form-input" autocomplete="off">
+      </div>
+      <div class="confirm-actions">
+        <button id="btn-confirm-cancel" class="btn-ghost">取消</button>
+        <button id="btn-confirm-ok" class="btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="/static/chat.js"></script>
+</body>
+</html>

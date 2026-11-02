@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-11-02T06:34:03.794856+00:00",
+  "source_checks": {
+    "passed": 45,
+    "total": 45
+  },
+  "relocated_mock_backend": {
+    "passed": 36,
+    "total": 36
+  },
+  "production_js_in_mock_dom": {
+    "passed": 6,
+    "total": 6
+  },
+  "setup_powershell_syntax": "passed",
+  "source_payloads_match_original": 40,
+  "git_initialized_in_source_snapshot": false,
+  "github_uploaded": false,
+  "limits": [
+    "Uses existing Python environment for validation; clean-machine installation was not executed.",
+    "Model weights and runtime binaries must be prepared separately.",
+    "No real browser, real model, or external search was launched during preparation.",
+    "Secret checks cover common patterns and explicit file exclusions, not every possible secret."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "alias": "qwen25-1.5b-instruct-q4_k_m",
+  "model": "models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "runtime": "runtime/llama.cpp/llama-server.exe",
+  "runtime_version": "b6100 (65c797c4), Windows CUDA 12",
+  "host": "127.0.0.1",
+  "port": 18085,
+  "base_url": "http://127.0.0.1:18085/v1",
+  "context_size": 4096,
+  "gpu_layers_requested": 99,
+  "parallel": 1,
+  "batch_size": 256,
+  "ubatch_size": 128,
+  "flash_attention": false,
+  "offline": true
+}

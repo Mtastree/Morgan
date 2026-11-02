@@ -1,0 +1,15 @@
+{
+  "profile": "eval",
+  "params": {
+    "temperature": 0,
+    "top_k": 1,
+    "top_p": 1,
+    "repeat_penalty": 1.0,
+    "seed": 0,
+    "max_tokens": 256
+  },
+  "description": "推理控制脚本的贪心验证参数示例。",
+  "notes": [
+    "需要按所选模型调整；这些值不是跨模型优化结果或能力保证。"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "profile": "chat",
+  "params": {
+    "temperature": 0.8,
+    "top_k": 40,
+    "top_p": 0.95,
+    "min_p": 0.05,
+    "repeat_penalty": 1.0,
+    "repeat_last_n": 64,
+    "seed": -1,
+    "max_tokens": 512
+  },
+  "description": "命令行直连聊天参数示例；桌面使用自身会话设置。",
+  "notes": [
+    "需要按所选模型调整；这些值不是跨模型优化结果或能力保证。"
+  ]
+}

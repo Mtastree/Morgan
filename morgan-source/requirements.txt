@@ -1,0 +1,2 @@
+# Desktop chat only; optional web search has a separate requirements file.
+-r src/hermes-lite/requirements.desktop.txt

@@ -1,0 +1,14 @@
+{
+  "repo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+  "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+  "file": {
+    "rfilename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "blobId": "eca68f83004d8b86fa1742ee507ddee8f4b2abce",
+    "size": 1117320736,
+    "lfs": {
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "size": 1117320736,
+      "pointerSize": 135
+    }
+  }
+}

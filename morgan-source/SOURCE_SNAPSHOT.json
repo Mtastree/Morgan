@@ -1,0 +1,207 @@
+{
+  "product": "Morgan",
+  "generated_at": "2026-11-02T06:28:40.757315+00:00",
+  "scope": "chat product source only; no model, runtime, user data or archived Agent experiments",
+  "copied_files": [
+    {
+      "path": "src/hermes-lite/hermes_lite/chatdesktop.py",
+      "source_sha256": "d274b21ee7fd54235fc6d22eeb887f538a96012d56f103b63e1dc1e50fb57d74",
+      "snapshot_sha256": "d274b21ee7fd54235fc6d22eeb887f538a96012d56f103b63e1dc1e50fb57d74"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatweb.py",
+      "source_sha256": "c072fa5a9767b57599c9d5dbf7f2ed7fd0bd1a7df88589a780142eee6eb79e91",
+      "snapshot_sha256": "c072fa5a9767b57599c9d5dbf7f2ed7fd0bd1a7df88589a780142eee6eb79e91"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatengine.py",
+      "source_sha256": "5bf87f4b2f3fab7e1cb19999afd4ff20bd67a6fea7ad44169575c4d59cbc928c",
+      "snapshot_sha256": "5bf87f4b2f3fab7e1cb19999afd4ff20bd67a6fea7ad44169575c4d59cbc928c"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatmem.py",
+      "source_sha256": "ca7d1d5ee767457d93052287a2414bd0f9044379ab99f2c5cc0372dfb1529e5c",
+      "snapshot_sha256": "ca7d1d5ee767457d93052287a2414bd0f9044379ab99f2c5cc0372dfb1529e5c"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatcompress.py",
+      "source_sha256": "d617d8733fbeb75a99a0205bcffa4aaae51d125eca64e1ec0c767206074e8ca6",
+      "snapshot_sha256": "d617d8733fbeb75a99a0205bcffa4aaae51d125eca64e1ec0c767206074e8ca6"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatparams.py",
+      "source_sha256": "310c83dd48a5441383270be2eb7517c25fa178ed574f1a8740620341c6bed47d",
+      "snapshot_sha256": "310c83dd48a5441383270be2eb7517c25fa178ed574f1a8740620341c6bed47d"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatstore.py",
+      "source_sha256": "82a836b54f97a4af330892c11cc69699143a20993f16741b98ad2439548ea79d",
+      "snapshot_sha256": "82a836b54f97a4af330892c11cc69699143a20993f16741b98ad2439548ea79d"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatsearch.py",
+      "source_sha256": "79ec3e7ef793dcad235b95ca03c665d11df0d0c4c4ba9d721e278a3bbfa8a8c6",
+      "snapshot_sha256": "79ec3e7ef793dcad235b95ca03c665d11df0d0c4c4ba9d721e278a3bbfa8a8c6"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chatsearch_router.py",
+      "source_sha256": "d446407e8c90703b3b5e20f8060d31e731ae2f074dbde32a60e848d3ef2efea3",
+      "snapshot_sha256": "d446407e8c90703b3b5e20f8060d31e731ae2f074dbde32a60e848d3ef2efea3"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/modelprofiles.py",
+      "source_sha256": "2feac9c2d152754c4d936b6a07aef0f60effc4b6a0125020a3158dcddf1af9ed",
+      "snapshot_sha256": "2feac9c2d152754c4d936b6a07aef0f60effc4b6a0125020a3158dcddf1af9ed"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/persona.py",
+      "source_sha256": "855d99d02a3a8bfe921a07f998752a671c9f86b93b801ddc7dbec22dbde363fa",
+      "snapshot_sha256": "855d99d02a3a8bfe921a07f998752a671c9f86b93b801ddc7dbec22dbde363fa"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/chat-256.png",
+      "source_sha256": "ae530f20f0fb581fb6258302e5f8238df5e1bb6503af5de5ee27ed7107dec9c7",
+      "snapshot_sha256": "ae530f20f0fb581fb6258302e5f8238df5e1bb6503af5de5ee27ed7107dec9c7"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/chat.css",
+      "source_sha256": "ce0370356b09e27211616837a7de8a16406a10b1c608725ee1559c71c41bc241",
+      "snapshot_sha256": "ce0370356b09e27211616837a7de8a16406a10b1c608725ee1559c71c41bc241"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/chat.ico",
+      "source_sha256": "fe28b9fddee2de4804dc1e2a7663d9c4adf53c3367ebdb9e20d19b29797a6212",
+      "snapshot_sha256": "fe28b9fddee2de4804dc1e2a7663d9c4adf53c3367ebdb9e20d19b29797a6212"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/chat.js",
+      "source_sha256": "25972d51ed2e42a071ea584e59272bc0f8c8df40c37f024b8bc8a99a403f89c6",
+      "snapshot_sha256": "25972d51ed2e42a071ea584e59272bc0f8c8df40c37f024b8bc8a99a403f89c6"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/chat.png",
+      "source_sha256": "a8eb6d23196a886ddea5fa650ec3cbf41ce7dfd99a22b4927f6e4f2e6ec46527",
+      "snapshot_sha256": "a8eb6d23196a886ddea5fa650ec3cbf41ce7dfd99a22b4927f6e4f2e6ec46527"
+    },
+    {
+      "path": "src/hermes-lite/hermes_lite/chat_static/index.html",
+      "source_sha256": "8872f8587dc24eeb99b80939e5a7073add2f3596501b298dffef6f02f35a6de3",
+      "snapshot_sha256": "8872f8587dc24eeb99b80939e5a7073add2f3596501b298dffef6f02f35a6de3"
+    },
+    {
+      "path": "src/hermes-lite/scripts/mock_model_server.py",
+      "source_sha256": "0ac1468828abe14ded8408d121649dc3f0d609dc5d246ac7c8b7c6911889b8e4",
+      "snapshot_sha256": "0ac1468828abe14ded8408d121649dc3f0d609dc5d246ac7c8b7c6911889b8e4"
+    },
+    {
+      "path": "src/hermes-lite/scripts/desktop_test_db_guard.py",
+      "source_sha256": "d141384ddc0f0b82aec459b62aa16013d82a6ccabc43ab4765ce0969b08a7f4e",
+      "snapshot_sha256": "d141384ddc0f0b82aec459b62aa16013d82a6ccabc43ab4765ce0969b08a7f4e"
+    },
+    {
+      "path": "src/hermes-lite/scripts/desktop_round55_search_automation_tests.py",
+      "source_sha256": "a5538d57a4851510aa6fbd3bad831315fc657747ec3c9e35a45bd25427fc467d",
+      "snapshot_sha256": "a5538d57a4851510aa6fbd3bad831315fc657747ec3c9e35a45bd25427fc467d"
+    },
+    {
+      "path": "src/hermes-lite/scripts/desktop_round58_search_gap_fill_tests.py",
+      "source_sha256": "a04e2e2b326cb01a2a734007e519471b6be660bc9861443c10ace5b64635da88",
+      "snapshot_sha256": "a04e2e2b326cb01a2a734007e519471b6be660bc9861443c10ace5b64635da88"
+    },
+    {
+      "path": "src/hermes-lite/scripts/desktop_round60_search_closeout_tests.py",
+      "source_sha256": "a78a115d1bcc8078259a63b299f21546accb7d6ee7b43d195e3fdde34633333b",
+      "snapshot_sha256": "a78a115d1bcc8078259a63b299f21546accb7d6ee7b43d195e3fdde34633333b"
+    },
+    {
+      "path": "src/hermes-lite/scripts/desktop_round60_frontend_real_js_tests.js",
+      "source_sha256": "0a286e85f98a2e16e10019e548fce308afb3e3bc599ebf0714569d6f5a3f89f6",
+      "snapshot_sha256": "0a286e85f98a2e16e10019e548fce308afb3e3bc599ebf0714569d6f5a3f89f6"
+    },
+    {
+      "path": "src/hermes-lite/requirements.desktop.txt",
+      "source_sha256": "b38a959041694b8c4d688ab4cdd48e38f42e2656910a1916700a5aabef117f6c",
+      "snapshot_sha256": "b38a959041694b8c4d688ab4cdd48e38f42e2656910a1916700a5aabef117f6c"
+    },
+    {
+      "path": "src/hermes-lite/requirements.search.txt",
+      "source_sha256": "9966d667568bfcb0449718f039122c68e5d0afdbdcebb0424e22f7c9fc3d47e4",
+      "snapshot_sha256": "9966d667568bfcb0449718f039122c68e5d0afdbdcebb0424e22f7c9fc3d47e4"
+    },
+    {
+      "path": "desktop.cmd",
+      "source_sha256": "42e0453fce93df86cdc7d30a547bc93fd2889db07aa7e67bb92dc333b2025a5a",
+      "snapshot_sha256": "42e0453fce93df86cdc7d30a547bc93fd2889db07aa7e67bb92dc333b2025a5a"
+    },
+    {
+      "path": "desktop.ps1",
+      "source_sha256": "cb58508eba7ea54b1253fdb3b7ccb4f4db9fda5280caa8b7a04b4c8ad0e44b0c",
+      "snapshot_sha256": "cb58508eba7ea54b1253fdb3b7ccb4f4db9fda5280caa8b7a04b4c8ad0e44b0c"
+    },
+    {
+      "path": "chatpage.cmd",
+      "source_sha256": "3291508c98ac488c7d9181cda069115d4f98005628f29f2a8dfacbd784adc7e3",
+      "snapshot_sha256": "3291508c98ac488c7d9181cda069115d4f98005628f29f2a8dfacbd784adc7e3"
+    },
+    {
+      "path": "chatpage.ps1",
+      "source_sha256": "d1e2f5dedbde2838e34699dde2ca8431e9d10bd5436a223ecdc7a0b191b6e92e",
+      "snapshot_sha256": "d1e2f5dedbde2838e34699dde2ca8431e9d10bd5436a223ecdc7a0b191b6e92e"
+    },
+    {
+      "path": "start.cmd",
+      "source_sha256": "5a97deae093e28dd7a3c859b6201e3b3ed36f875b7bad691984caddde63fee9d",
+      "snapshot_sha256": "5a97deae093e28dd7a3c859b6201e3b3ed36f875b7bad691984caddde63fee9d"
+    },
+    {
+      "path": "start.ps1",
+      "source_sha256": "3a9fa48c21bffa8b1407b04b357daec2c7ce049e2a509491fde0d20852c8c2ab",
+      "snapshot_sha256": "3a9fa48c21bffa8b1407b04b357daec2c7ce049e2a509491fde0d20852c8c2ab"
+    },
+    {
+      "path": "stop.cmd",
+      "source_sha256": "5d3b360eaa09efec7074d68f35da3f95f77fcd4c4bcf5cff04b8eae11809f2be",
+      "snapshot_sha256": "5d3b360eaa09efec7074d68f35da3f95f77fcd4c4bcf5cff04b8eae11809f2be"
+    },
+    {
+      "path": "stop.ps1",
+      "source_sha256": "23c7705fd41fecf7ac7cb5ef975bcc281e2c4891bed1bc32a0036abbaa7af6b5",
+      "snapshot_sha256": "23c7705fd41fecf7ac7cb5ef975bcc281e2c4891bed1bc32a0036abbaa7af6b5"
+    },
+    {
+      "path": "status.cmd",
+      "source_sha256": "6c3f195b1a093310b9cb45dd97412b458c62bfe01b16a08c169bb808f29530c3",
+      "snapshot_sha256": "6c3f195b1a093310b9cb45dd97412b458c62bfe01b16a08c169bb808f29530c3"
+    },
+    {
+      "path": "status.ps1",
+      "source_sha256": "56a4d6b5879fe4101529add475b7716718e10f78f13fa25ab400c8c95381215d",
+      "snapshot_sha256": "56a4d6b5879fe4101529add475b7716718e10f78f13fa25ab400c8c95381215d"
+    },
+    {
+      "path": "chat.cmd",
+      "source_sha256": "38351294dc76c947e7711dcc6286f23ac108f5e0335c98cd379ab89dd12900b3",
+      "snapshot_sha256": "38351294dc76c947e7711dcc6286f23ac108f5e0335c98cd379ab89dd12900b3"
+    },
+    {
+      "path": "chat.ps1",
+      "source_sha256": "5f4a56265d9c61aa024a0822bcaddb2bb945a8368fc1c302fa95382936976ab6",
+      "snapshot_sha256": "5f4a56265d9c61aa024a0822bcaddb2bb945a8368fc1c302fa95382936976ab6"
+    },
+    {
+      "path": "scripts/common.ps1",
+      "source_sha256": "46950f7b0ff671d49aa8aefd006247ab9a2e7d169a2b4e44554fe16f5339f7b0",
+      "snapshot_sha256": "46950f7b0ff671d49aa8aefd006247ab9a2e7d169a2b4e44554fe16f5339f7b0"
+    },
+    {
+      "path": "scripts/local_model.py",
+      "source_sha256": "ab84206daa0beef1e9f80919266ac89a8154d4463d1a8da05d92c1b4b2181742",
+      "snapshot_sha256": "ab84206daa0beef1e9f80919266ac89a8154d4463d1a8da05d92c1b4b2181742"
+    },
+    {
+      "path": "scripts/fetch_model.ps1",
+      "source_sha256": "b5ba13321fc7a21874dd0830a8f54ac21563b6b3669b694e2d117bd2522fc140",
+      "snapshot_sha256": "b5ba13321fc7a21874dd0830a8f54ac21563b6b3669b694e2d117bd2522fc140"
+    }
+  ]
+}
